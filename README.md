@@ -7,7 +7,6 @@ A BetterDiscord plugin by [naykis](https://github.com/nyks91) that helps blocked
 - Automatic retry when YouTube reports an eligible embedding restriction.
 - Original Discord embeds for videos that play normally.
 - A small indicator when the alternate player is used.
-- English interface, with Turkish when Discord uses Turkish.
 
 ## Installation
 
@@ -19,7 +18,7 @@ A BetterDiscord plugin by [naykis](https://github.com/nyks91) that helps blocked
 
 The plugin checks YouTube for an explicit embedding restriction. For eligible videos, it retries playback through a small page hosted on GitHub Pages. The page opens the official YouTube player, and YouTube delivers the video.
 
-The embedding page is included in [embed/](embed/index.html). Its address is `https://nyks91.github.io/FixYoutubeEmbeds/embed/`. GitHub may redirect it to the account's custom domain, currently `naykis.me`. The plugin resolves that redirect and opens the destination over HTTPS. If the custom domain is removed from GitHub Pages, the same GitHub address can serve the page directly.
+The embedding page is maintained on the [pages branch](https://github.com/nyks91/FixYoutubeEmbeds/tree/pages). Its address is `https://nyks91.github.io/FixYoutubeEmbeds/embed/`. GitHub may redirect it to the account's custom domain, currently `naykis.me`. The plugin resolves that redirect and opens the destination over HTTPS. If the custom domain is removed from GitHub Pages, the same GitHub address can serve the page directly.
 
 The page receives the video ID and supported playback parameters. It contains no account system or analytics of its own and does not download, store, or proxy videos. GitHub Pages and YouTube receive normal web requests under their respective policies.
 
