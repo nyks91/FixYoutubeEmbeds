@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>YouTube embed</title>
+<style>
+  html,body { margin:0; width:100%; height:100%; background:#0f0f0f; color:#ddd; font:14px system-ui,sans-serif; }
+  iframe { display:block; width:100%; height:100%; border:0; }
+  .welcome { box-sizing:border-box; width:calc(100% - 32px); max-width:460px; margin:10vh auto; padding:28px; background:#191919; border:1px solid #303030; border-radius:12px; }
+  .welcome h1 { margin:0 0 16px; color:#eee; font-size:21px; font-weight:650; }
+  .welcome .description { margin:0; color:#ddd; font-size:14px; line-height:1.65; }
+  .welcome nav { display:flex; flex-wrap:wrap; gap:9px; margin-top:22px; }
+  .welcome a { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:36px; gap:7px; padding:0 11px; color:#eee; background:#252525; border:1px solid #383838; border-radius:8px; text-decoration:none; font-size:13px; font-weight:500; line-height:1; transition:background .15s ease; }
+  .welcome a:hover { background:#303030; }
+  .welcome a:focus-visible { outline:2px solid #a5adff; outline-offset:3px; }
+  .welcome a svg { display:block; width:16px; height:16px; flex:0 0 16px; }
+  .welcome a span { display:block; line-height:18px; }
+  .welcome .website-link { gap:7px; }
+  .welcome .website-link svg { width:16px; height:16px; flex-basis:16px; }
+  .welcome .website-link span { transform:translateY(-1px); }
+
+  @media(max-width:400px) { .welcome { padding:24px; } }
+</style>
+<body>
+<script>
+(() => {
+  'use strict';
+  const params = new URL(location.href).searchParams;
+  const video = params.get('v');
+  if (!video || !/^[A-Za-z0-9_-]{11}$/.test(video)) {
+    const message = document.createElement('main');
+    message.className = 'welcome';
+    const title = document.createElement('h1');
+    title.textContent = 'FixYoutubeEmbeds';
+    const detail = document.createElement('p');
+    detail.className = 'description';
+    detail.textContent = video
+      ? 'This link needs a valid YouTube video ID.'
+      : 'A companion player for BetterDiscord that helps blocked YouTube embeds play.';
+    message.append(title, detail);
+    const links = document.createElement('nav');
+    links.setAttribute('aria-label', 'Project links');
+    for (const [label, href] of [
+      ['View plugin', 'https://github.com/nyks91/FixYoutubeEmbeds'],
+      ['naykis.me', 'https://naykis.me/']
+    ]) {
+      const link = document.createElement('a');
+      link.href = href;
+      if (label === 'naykis.me') link.className = 'website-link';
+      const text = document.createElement('span');
+      text.textContent = label;
+      link.append(text);
+      if (label === 'View plugin') {
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        icon.setAttribute('viewBox', '0 0 24 24');
+        icon.setAttribute('width', '16');
+        icon.setAttribute('height', '16');
+        icon.setAttribute('aria-hidden', 'true');
+        const path = document.createElementNS(icon.namespaceURI, 'path');
+        path.setAttribute('fill', 'currentColor');
+        path.setAttribute('d', 'M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1.01 1.73 2.64 1.23 3.27 1.08.1-.73.39-1.23.71-1.51-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.24 1.16-3.03-.12-.29-.5-1.44.11-3 0 0 .95-.31 3.09 1.15a10.76 10.76 0 0 1 5.62 0c2.15-1.46 3.09-1.15 3.09-1.15.61 1.56.23 2.71.11 3 .72.79 1.16 1.8 1.16 3.03 0 4.32-2.63 5.27-5.14 5.55.4.35.76 1.03.76 2.08v2.96c0 .3.2.65.77.54A11.25 11.25 0 0 0 12 .75Z');
+        icon.append(path);
+        link.prepend(icon);
+      } else {
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        icon.setAttribute('viewBox', '2 2 20 20');
+        icon.setAttribute('width', '16');
+        icon.setAttribute('height', '16');
+        icon.setAttribute('aria-hidden', 'true');
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
+        icon.setAttribute('stroke-width', '1.5');
+        const path = document.createElementNS(icon.namespaceURI, 'path');
+        path.setAttribute('d', 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c-4 4-4 14 0 18M12 3c4 4 4 14 0 18');
+        icon.append(path);
+        link.prepend(icon);
+      }
+      links.append(link);
+    }
+    message.append(links);
+    document.body.append(message);
+    return;
+  }
+  const url = new URL('https://www.youtube.com/embed/' + video);
+  for (const name of ['start','end','autoplay','mute','controls','loop','playlist','playsinline','cc_load_policy','cc_lang_pref','hl','rel']) {
+    if (params.has(name)) url.searchParams.set(name, params.get(name));
+  }
+  const frame = document.createElement('iframe');
+  frame.title = 'YouTube video player';
+  frame.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+  frame.allowFullscreen = true;
+  frame.referrerPolicy = 'strict-origin-when-cross-origin';
+  frame.src = url.href;
+  document.body.append(frame);
+})();
+</script>
+</body>
+</html>
+
